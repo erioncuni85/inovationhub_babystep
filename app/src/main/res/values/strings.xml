@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">BabyStep</string>
+    <string name="action_settings">Settings</string>
+    <string name="label_bnt_login">Logohu</string>
+    <string name="label_bnt_recover">Rikupero</string>
+    <string name="label_bnt_register">Regjistrohu</string>
+    <string name="dialog_message">Ky eshte nje dialog</string>
+    <string name="dialog_title">Alert</string>
+    <string name="title_activity_main_menu">MainMenu</string>
+</resources>
