@@ -1,5 +1,6 @@
 package com.tir.alb.babystep;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,6 +21,8 @@ public class MainMenu extends AppCompatActivity {
 
     Button Menu1,Menu2,Menu3;
     FrameLayout First;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

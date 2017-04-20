@@ -2,9 +2,11 @@ package com.tir.alb.babystep.fragment;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -40,16 +42,20 @@ import java.util.concurrent.TimeUnit;
 
 public class Fragment_CallCenter extends Fragment {
     private static final String TAG = "FragmentRegister";
-    Button CallNumber;
+    Button CallNumber,Brexit;
     TextView Label;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_callcenter, null);
 
-
+        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        editor = preferences.edit();
         Label = (TextView)v.findViewById(R.id.txt_label_number);
         CallNumber = (Button)v.findViewById(R.id.btn_call);
+        Brexit = (Button)v.findViewById(R.id.btn_brexit);
 
 
         CallNumber.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +74,14 @@ public class Fragment_CallCenter extends Fragment {
         });
 
 
+        Brexit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.clear();
+                editor.commit();
 
+            }
+        });
 
 
 

@@ -3,7 +3,9 @@ package com.tir.alb.babystep;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 
@@ -21,7 +23,10 @@ public class MainActivity extends AppCompatActivity {
     Button BtnLogin,BtnRegister,BtnRecover;
     EditText InpEmail,InpPassword;
     String RcvEmail,RcvPassword;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
+    String SharedEmail,SharedPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,17 @@ public class MainActivity extends AppCompatActivity {
         InpPassword = (EditText) findViewById(R.id.inp_password);
 
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = preferences.edit();
+
+
+        SharedEmail = preferences.getString("log_email", "no email");
+
+        if(!SharedEmail.equalsIgnoreCase("no email")){
+            goProfile();
+        }
+
+        //Toast.makeText(getApplicationContext(),"Stored Email has: "+SharedEmail,Toast.LENGTH_LONG).show();
 
 
         BtnLogin.setOnClickListener(new View.OnClickListener() {
@@ -138,6 +154,11 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext(), "ka te dhena: "+RcvEmail, Toast.LENGTH_SHORT).show();
             goProfile();
+            editor.putString("log_email", RcvEmail);
+            editor.putString("log_password", RcvPassword);
+            editor.commit();
+
+
         }
 
 
@@ -151,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
         RcvEmail = InpEmail.getText().toString();
 
-        Intent intent = new Intent(this, Profili.class);
+        Intent intent = new Intent(this, MainMenu.class);
         Bundle b = new Bundle();
         b.putString("fullname", RcvEmail);
         b.putLong("phoneNumber", 123466);
