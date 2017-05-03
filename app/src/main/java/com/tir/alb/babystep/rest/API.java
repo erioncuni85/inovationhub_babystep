@@ -5,6 +5,7 @@ package com.tir.alb.babystep.rest;
 
 import com.tir.alb.babystep.model.LoginResponse;
 import com.tir.alb.babystep.model.Model_Video;
+import com.tir.alb.babystep.model.News;
 import com.tir.alb.babystep.model.RegisterResponse;
 
 import retrofit2.Call;
@@ -20,8 +21,9 @@ public interface API {
     //String BASE_URL = "http://46.101.125.115/news/index.php/"; //replace this with your base url
     // String BASE_URL = "http://192.168.43.77/backends/paper/index.php/api/"; //replace this with your base url
     String BASE_URL = "http://develop.almotech.org/autoshkolla_studenti/autoshkolla_studenti_service/public/api/"; //replace this with your base url
+    String BASE_URL1 = "https://newsapi.org/v1/"; //replace this with your base url
 //http://develop.almotech.org/autoshkolla_studenti/autoshkolla_studenti_service/public/api/login
-
+             //articles?source=bbc-news&sortBy=top&apiKey=885fdf2bbc1449dc851652be64d6af60
     @FormUrlEncoded
     @POST("register")
     Call<RegisterResponse> register(@Field("fullname") String fullname,
@@ -37,6 +39,12 @@ public interface API {
 
     @GET("get_videos")
     Call<Model_Video> videos();
+
+
+
+
+      @GET("articles?source=bbc-news&sortBy=top&apiKey=885fdf2bbc1449dc851652be64d6af60")
+      Call<News> news();
 
 
 

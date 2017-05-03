@@ -11,6 +11,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.tir.alb.babystep.rest.API.BASE_URL;
+import static com.tir.alb.babystep.rest.API.BASE_URL1;
 
 
 /**
@@ -27,7 +28,7 @@ public class APIClient {
     public static Retrofit createAPI() {
         if (retrofit==null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(BASE_URL1)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

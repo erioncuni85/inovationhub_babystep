@@ -20,9 +20,15 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.tir.alb.babystep.model.Article;
 import com.tir.alb.babystep.model.LoginResponse;
+import com.tir.alb.babystep.model.News;
 import com.tir.alb.babystep.rest.API;
 import com.tir.alb.babystep.rest.APIClient;
+
+import org.json.JSONObject;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     Gson gson;
 
     String SharedEmail,SharedPassword;
-
+    List<Article> article;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                // Toast.makeText(getApplicationContext(),"test pippo",Toast.LENGTH_LONG).show();
                // dialog();
-                checkData();
+                //checkData();
+                get_all_news();
 
             }
         });
@@ -244,6 +251,51 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Ndodhi nje gabim ne sistem"+t.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
+    public void get_all_news() {
+
+
+        final API api =
+                APIClient.createAPI().create(API.class);
+
+        Call<News> totclient = api.news();
+        totclient.enqueue(new Callback<News>() {
+            @Override
+            public void onResponse(Call<News> call, retrofit2.Response<News> response) {
+                //dialog.dismiss();
+                // Log.d(TAG, "Succes:" + response.body().isError());
+                JSONObject obj = new JSONObject();
+                System.out.println("AllLectures:" + gson.toJson(response.body()));
+
+                if(!gson.toJson(response.body()).equalsIgnoreCase("null"))
+                {
+                    String Status = gson.toJson(response.body().getStatus());
+                    String Surce = gson.toJson(response.body().getSource());
+
+
+                    article = response.body().getArticles();
+                    Toast.makeText(getApplicationContext(),"Source: "+Surce,Toast.LENGTH_LONG).show();
+
+
+
+                }else{
+                    Toast.makeText(getApplicationContext(),"Sesioni juaj ka skaduar ju duhet te rilogoheni",Toast.LENGTH_LONG).show();
+                }
+
+
+                // recyclerView.setAdapter(new CategoryAdapter(category, R.layout.adapter_category, getActivity()));
+
+            }
+
+            @Override
+            public void onFailure(Call<News> call, Throwable t) {
+
+                //dialog.dismiss();
             }
         });
     }
