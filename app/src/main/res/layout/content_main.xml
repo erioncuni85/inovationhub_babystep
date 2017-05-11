@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:text="erald.almotech@gmail.com"
             android:hint="Email"
             android:inputType="textEmailAddress" />
         <EditText
@@ -27,6 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:text="qwerty"
             android:hint="Password"
             android:inputType="textPassword" />
 

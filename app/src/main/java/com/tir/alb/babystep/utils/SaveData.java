@@ -48,6 +48,21 @@ public class SaveData {
         editor.commit();
     }
 
+
+    public void SaveBabyStepLogin(int id, String fullname, String email, String token){
+        editor.putInt("babystep_id", id);
+        editor.putString("babystep_fullname",fullname);
+        editor.putString("babystep_email",email);
+        editor.putString("babystep_token",token);
+        editor.commit();
+    }
+
+    public String get_babystep_token(){
+
+        return preferences.getString("babystep_token", "no-token");
+    }
+
+
     public void SaveFirstName(String firstname){
         editor.putString("paf_firstname",firstname);
         editor.commit();

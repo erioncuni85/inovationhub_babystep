@@ -35,7 +35,15 @@ public class APIClient {
         return retrofit;
     }
 
-
+    public static Retrofit createAPILogin() {
+        if (retrofit==null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofit;
+    }
     //////////////////// Methot Get Without Headers///////////////////
 
     public static Retrofit getClient() {

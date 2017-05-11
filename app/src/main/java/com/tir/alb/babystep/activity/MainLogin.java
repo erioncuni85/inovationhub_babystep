@@ -1,4 +1,4 @@
-package com.tir.alb.babystep;
+package com.tir.alb.babystep.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,11 +18,14 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.tir.alb.babystep.MainMenu;
+import com.tir.alb.babystep.R;
 import com.tir.alb.babystep.model.Article;
 import com.tir.alb.babystep.model.LoginResponse;
 import com.tir.alb.babystep.model.News;
 import com.tir.alb.babystep.rest.API;
 import com.tir.alb.babystep.rest.APIClient;
+import com.tir.alb.babystep.utils.SaveData;
 
 import org.json.JSONObject;
 
@@ -34,7 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainLogin extends AppCompatActivity {
 
     Button BtnLogin,BtnRegister,BtnRecover;
     EditText InpEmail,InpPassword;
@@ -42,16 +43,17 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     Gson gson;
-
+    SaveData saveData;
     String SharedEmail,SharedPassword;
     List<Article> article;
+    String SharedToken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        saveData = new SaveData(getApplicationContext());
         BtnLogin = (Button) findViewById(R.id.btn_login);
         BtnRegister = (Button) findViewById(R.id.bnt_register);
         BtnRecover = (Button) findViewById(R.id.bnt_recover);
@@ -63,10 +65,13 @@ public class MainActivity extends AppCompatActivity {
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = preferences.edit();
 
+        SharedToken = saveData.get_babystep_token();
 
-        SharedEmail = preferences.getString("log_email", "no email");
+        //SharedEmail = preferences.getString("babystep_token", "no token");
 
-        if(!SharedEmail.equalsIgnoreCase("no email")){
+
+
+        if(!SharedToken.equalsIgnoreCase("no-token")){
             goProfile();
         }
 
@@ -78,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                // Toast.makeText(getApplicationContext(),"test pippo",Toast.LENGTH_LONG).show();
                // dialog();
-                //checkData();
+               checkData();
                 get_all_news();
 
             }
@@ -103,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        AlertDialog alertDialog = new AlertDialog.Builder(MainLogin.this).create();
 
         // Setting Dialog Title
         alertDialog.setTitle("Alert Dialog");
@@ -169,10 +174,10 @@ public class MainActivity extends AppCompatActivity {
         RcvEmail = InpEmail.getText().toString();
         RcvPassword = InpPassword.getText().toString();
         if(RcvEmail.equalsIgnoreCase("") || RcvEmail==null){
-            Toast.makeText(getApplicationContext(), "ska te dhena", Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(getApplicationContext(), "ska te dhena", Toast.LENGTH_SHORT).show();
         } else {
             loginUser();
-            Toast.makeText(getApplicationContext(), "ka te dhena: "+RcvEmail, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getApplicationContext(), "ka te dhena: "+RcvEmail, Toast.LENGTH_SHORT).show();
            // goProfile();
             editor.putString("log_email", RcvEmail);
             editor.putString("log_password", RcvPassword);
@@ -196,7 +201,9 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, MainMenu.class);
         Bundle b = new Bundle();
-        b.putString("fullname", RcvEmail);
+        b.putString("emri", "Erion");
+        b.putString("mbiemri", "Cuni");
+        b.putString("url", "http://www.venmond.com/demo/vendroid/img/avatar/big.jpg");
         b.putLong("phoneNumber", 123466);
         //intent.putExtra("email","erion@email.com");
         //intent.putExtra(b);
@@ -212,40 +219,53 @@ public class MainActivity extends AppCompatActivity {
         RcvEmail = InpEmail.getText().toString();
         RcvPassword = InpPassword.getText().toString();
         final API apiService =
-                APIClient.createAPI().create(API.class);
+                APIClient.createAPILogin().create(API.class);
 
         Call<LoginResponse> userCallbackCall = apiService.login(RcvEmail, RcvPassword,"123456");
         userCallbackCall.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
 
-
+                if (response.body()!=null) {
                 System.out.println("LoginResponse:" + gson.toJson(response.body()));
+
                 //String st = response.body().toString();
-                if (!response.body().getError()) {
-                    // Toast.makeText(getApplicationContext(), "LoginResponse:" + gson.toJson(response.body()), Toast.LENGTH_SHORT).show();
-                    System.out.println("LoginResponse :" + gson.toJson(response.body().getToken()));
-                    // int id, String fullname, String email, String phoneNumber, String token, String RememberToken
-                    int id=response.body().getData().getId();
-                    String fullname=response.body().getData().getFullname();
-                    String email=response.body().getData().getEmail();
-                    String phoneNumber=response.body().getData().getPhoneNumber();
-                    String token=response.body().getToken();
-                    String RememberToken=response.body().getData().getRememberToken();
-                    //saveData.SaveLoginData(id,fullname,email,phoneNumber,token,RememberToken);
-                    if(!token.isEmpty()){
-                      //  menu();
-                    }else
-                    {
-                        Toast.makeText(getApplicationContext(), "Dicka Shkoi Gabim", Toast.LENGTH_SHORT).show();
-                    }
+
+                                if (!response.body().getError()) {
+                                    // Toast.makeText(getApplicationContext(), "LoginResponse:" + gson.toJson(response.body()), Toast.LENGTH_SHORT).show();
+                                    System.out.println("LoginResponse :" + gson.toJson(response.body().getToken()));
+                                    // int id, String fullname, String email, String phoneNumber, String token, String RememberToken
+                                    int id=response.body().getData().getId();
+                                    String fullname=response.body().getData().getFullname();
+                                    String email=response.body().getData().getEmail();
+                                    String phoneNumber=response.body().getData().getPhoneNumber();
+                                    String token=response.body().getToken();
+                                    String RememberToken=response.body().getData().getRememberToken();
+
+                                    Toast.makeText(getApplicationContext(), gson.toJson(response.body().getData().getFullname()), Toast.LENGTH_SHORT).show();
+                                    if(!token.isEmpty()){
+                                      //  menu();
+                                        saveData.SaveBabyStepLogin(id,fullname,email,token);
+
+                                        goProfile();
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(getApplicationContext(), "Dicka Shkoi Gabim", Toast.LENGTH_SHORT).show();
+                                    }
 
 
 
+
+
+                                }else{
+                                    //dialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), gson.toJson(response.body().getMessage()), Toast.LENGTH_SHORT).show();
+                                }
 
                 }else{
                     //dialog.dismiss();
-                    Toast.makeText(getApplicationContext(), gson.toJson(response.body().getMessage()), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "JSON ESHTE BOSH", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override

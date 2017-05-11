@@ -7,4 +7,6 @@
     <string name="dialog_message">Ky eshte nje dialog</string>
     <string name="dialog_title">Alert</string>
     <string name="title_activity_main_menu">MainMenu</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_news_details">NewsDetails</string>
 </resources>

@@ -79,8 +79,16 @@ public class MainMenu extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment_Sherbime sherbime = new Fragment_Sherbime();
         Bundle data = new Bundle();//Use bundle to pass data
-        data.putString("emri", "Pippo");//put string, int, etc in bundle with a key value
-        data.putString("mbiemri", "Pluto");//iemput string, int, etc in bundle with a key value
+       // data.putString("emri", "Pippo");//put string, int, etc in bundle with a key value
+       // data.putString("mbiemri", "Pluto");//iemput string, int, etc in bundle with a key value
+
+
+        data.putString("emri", "Erion");
+        data.putString("mbiemri", "Cuni");
+        data.putString("url", "http://www.venmond.com/demo/vendroid/img/avatar/big.jpg");
+        data.putLong("phoneNumber", 123466);
+
+
         sherbime.setArguments(data);//Finally set argument bundle to fragment
         fragmentTransaction.replace(R.id.first, sherbime, "Sherbime");
         fragmentTransaction.commit();
