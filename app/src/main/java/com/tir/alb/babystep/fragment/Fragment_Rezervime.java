@@ -48,7 +48,7 @@ public class Fragment_Rezervime extends Fragment {
     Gson gson;
     Dialog dialog;
     private NewsAdapter adapter;
-   // List<Model_Lecture_Data> lecture;
+   // List<Model_Lecture_Data> lecture; 44
     List<Article> article;
     public Fragment_Rezervime() {
         // Required empty public constructor
